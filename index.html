@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#6856dc">
+  <meta name="description" content="초등학교 4~6학년을 위한 재미있는 20문항 성향 탐색 웹앱">
+  <title>우리 반 나의 성향 찾기</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="decor decor-a" aria-hidden="true"></div><div class="decor decor-b" aria-hidden="true"></div>
+  <main class="app" id="app">
+    <header class="topbar"><span class="brand">🌈 우리 반 마음 탐험</span><span class="topbadge">4~6학년 · 20문항</span></header>
+    <section id="welcomeScreen" class="screen" aria-labelledby="welcomeTitle">
+      <div class="welcome-layout">
+        <div>
+          <p class="eyebrow">나도 몰랐던 나의 모습을 발견해요!</p>
+          <h1 id="welcomeTitle">우리 반<br><span>나의 성향 찾기</span></h1>
+          <p class="lead">20가지 상황을 읽고 나에게 가장 가까운 답을 골라 보세요. 어떤 모습이든 모두 소중해요!</p>
+          <div class="chips"><span>⏰ 약 5~7분</span><span>✅ 정답·오답 없음</span><span>🧡 4가지 성향</span></div>
+          <button class="primary large" id="startBtn" type="button">시작하기 <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="mascot-grid" aria-label="탐험가형 강아지, 계획가형 토끼, 아이디어형 고양이, 배려형 펭귄">
+          <img src="assets/explorer.svg" alt="지도와 돋보기를 든 탐험가 강아지"><img src="assets/planner.svg" alt="책을 든 계획가 토끼"><img src="assets/creator.svg" alt="전구를 든 아이디어 고양이"><img src="assets/helper.svg" alt="하트를 안은 배려 펭귄">
+        </div>
+      </div>
+      <p class="footnote">※ 이 활동은 재미있는 자기 이해 활동이며 심리검사나 친구 관계의 정답이 아닙니다.</p>
+    </section>
+    <section id="infoScreen" class="screen hidden" aria-labelledby="infoTitle">
+      <div class="center-head"><span class="step-label">STEP 1 / 3</span><h2 id="infoTitle">나를 소개해 주세요 ✏️</h2><p>결과 화면에 내 정보를 표시하기 위해 입력해요.</p></div>
+      <form id="studentForm" novalidate>
+        <div class="field-grid">
+          <label>학년<select id="grade" required><option value="">선택하기</option><option value="4">4학년</option><option value="5">5학년</option><option value="6">6학년</option></select></label>
+          <label>반<input id="classNumber" type="number" min="1" max="30" step="1" inputmode="numeric" placeholder="예: 3" required></label>
+          <label>번호<input id="studentNumber" type="number" min="1" max="50" step="1" inputmode="numeric" placeholder="예: 12" required></label>
+          <label>이름<input id="studentName" type="text" maxlength="20" autocomplete="off" placeholder="예: 김하늘" required></label>
+        </div>
+        <div class="privacy-note"><strong>🔒 개인정보 안내 (첫 번째 버전)</strong><p>학년·반·번호·이름은 이 기기에서 결과를 보여 주는 데만 사용합니다. 서버로 보내거나 파일·브라우저 저장소에 저장하지 않으며, 새로고침하거나 페이지를 닫으면 사라집니다. 공용 컴퓨터에서는 사용 후 페이지를 닫아 주세요.</p><label class="agreement"><input id="privacyCheck" type="checkbox" required><span>위 안내를 읽고 계속 진행하겠습니다.</span></label></div>
+        <p id="infoError" class="error" role="alert" aria-live="polite"></p>
+        <div class="action-row"><button type="button" class="ghost" id="infoBackBtn">← 처음으로</button><button type="submit" class="primary">문제 풀러 가기 →</button></div>
+      </form>
+    </section>
+    <section id="quizScreen" class="screen hidden" aria-labelledby="questionText">
+      <div class="quiz-header"><span class="step-label">STEP 2 / 3</span><span class="counter" id="questionCount">1 / 20</span></div>
+      <div class="progress" role="progressbar" aria-label="문제 진행률" aria-valuemin="0" aria-valuemax="20" aria-valuenow="1" id="progressbar"><div id="progressFill"></div></div>
+      <p class="helper-text">생각을 너무 오래 하지 않아도 괜찮아요. 가장 나다운 답을 골라요!</p>
+      <h2 class="question" id="questionText"></h2>
+      <div id="choices" class="choices" role="radiogroup" aria-labelledby="questionText"></div>
+      <p class="answer-hint" id="answerHint" aria-live="polite">답을 하나 선택해 주세요.</p>
+      <div class="action-row"><button type="button" class="ghost" id="prevBtn">← 이전 문제</button><button type="button" class="primary" id="nextBtn" disabled>다음 문제 →</button></div>
+    </section>
+    <section id="resultScreen" class="screen hidden" aria-labelledby="resultTitle">
+      <div class="center-head"><span class="step-label">STEP 3 / 3</span><h2 id="resultTitle">나의 성향을 발견했어요! 🎉</h2><p id="resultStudent"></p></div>
+      <div class="result-hero"><img id="resultCharacter" src="assets/explorer.svg" alt=""><div><p class="eyebrow">나를 가장 잘 나타내는 모습</p><h3 id="resultType"></h3><p id="resultSubtitle"></p><p class="small-note" id="resultTie"></p></div></div>
+      <div class="result-cards"><article class="result-card"><h3>✨ 나의 특징</h3><p id="resultDescription"></p></article><article class="result-card"><h3>💪 나의 강점</h3><p id="resultStrength"></p></article><article class="result-card"><h3>🤝 함께하면 좋은 성향</h3><div class="match-row"><img id="matchCharacter" src="assets/helper.svg" alt=""><div><h4 id="matchName"></h4><p id="matchDescription"></p></div></div></article><article class="result-card"><h3>🌱 성장하는 한마디</h3><p id="resultAdvice"></p></article></div>
+      <div class="score-panel"><h3>내가 보여 준 네 가지 모습</h3><p>각 성향에 해당하는 5문항의 응답 합계예요. 높고 낮음에 좋고 나쁨은 없어요.</p><div id="scoreBars"></div></div>
+      <div class="closing-note">💜 사람에게는 여러 성향이 함께 있어요. 결과는 나를 이해하는 작은 힌트일 뿐, 나와 친구를 정해진 유형으로 나누는 기준이 아니에요.</div>
+      <div class="action-row result-actions"><button type="button" class="ghost" id="printBtn">🖨️ 결과 인쇄</button><button type="button" class="primary" id="restartBtn">↻ 다시 시작하기</button></div>
+      <p class="footnote" id="saveStatus">첫 번째 버전: 결과는 온라인 데이터베이스에 저장되지 않습니다.</p>
+    </section>
+  </main>
+</body>
+</html>
