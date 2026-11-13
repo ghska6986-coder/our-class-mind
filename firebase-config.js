@@ -4,7 +4,7 @@
 window.QUIZ_FIREBASE_CONFIG = {
   enabled: true,
   firebaseConfig: {
-    apiKey: "AIzaSyDrOWCYETmZhMssonL3KyWXtNd6CyJkkxCU",
+    apiKey: "AIzaSyDrQWcYFThzMssonL3KvWXtNd6CvJkkxCU",
     authDomain: "our-class-mind-1870d.firebaseapp.com",
     projectId: "our-class-mind-1870d",
     storageBucket: "our-class-mind-1870d.firebasestorage.app",
