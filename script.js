@@ -65,11 +65,15 @@ const types = {
   },
 };
 
-// 3. 저장 기능을 나중에 Firebase로 바꾸기 위한 연결 지점입니다.
-// 첫 번째 버전에서는 어디에도 데이터를 보내거나 저장하지 않습니다.
+// 3. Firebase 연결: firebase-config.js에서 연결 여부를 설정합니다.
+// 학생의 이름·반·번호·학년은 첫 단계에서는 절대 서버에 저장하지 않습니다.
 const resultRepository = {
-  async saveResult(_record) {
-    return { saved: false, message: "첫 번째 버전: 저장 기능이 연결되지 않았습니다." };
+  async saveResult(record) {
+    if (!window.QUIZ_FIREBASE_CONFIG?.enabled) {
+      return { saved: false, message: "Firebase 미연결: 결과는 이 화면에서만 볼 수 있습니다." };
+    }
+    const firebaseModule = await import("./firebase-save.js");
+    return firebaseModule.saveQuizResult(record);
   },
 };
 
@@ -195,9 +199,26 @@ function showResult() {
     row.append(label, track, output);
     $("scoreBars").append(row);
   });
-  // 개인정보를 서버에 보내지 않습니다. Firebase 연결 이후에만 별도 동의와 권한 설정을 거쳐 저장하세요.
-  $("saveStatus").textContent = "첫 번째 버전: 결과는 온라인 데이터베이스에 저장되지 않습니다.";
+  // 첫 단계에서는 성향 결과만 저장합니다. 이름, 학년, 반, 번호는 보내지 않습니다.
+  $("saveStatus").textContent = window.QUIZ_FIREBASE_CONFIG?.enabled
+    ? "성향 결과를 저장하고 있습니다... (이름·학년·반·번호는 저장하지 않음)"
+    : "Firebase 미연결: 결과는 온라인 데이터베이스에 저장되지 않습니다.";
   showScreen("resultScreen");
+  if (window.QUIZ_FIREBASE_CONFIG?.enabled) {
+    const record = {
+      version: 2,
+      typeKey,
+      totals: { ...totals },
+    };
+    resultRepository.saveResult(record)
+      .then(result => { $("saveStatus").textContent = result.saved
+        ? "✅ 성향 결과가 저장되었습니다. (이름·학년·반·번호는 저장하지 않았습니다.)"
+        : result.message; })
+      .catch(error => {
+        console.error("Firebase 저장 실패:", error);
+        $("saveStatus").textContent = "⚠️ 저장에 실패했습니다. Firebase 설정과 보안 규칙을 확인하세요. (화면 결과는 계속 볼 수 있습니다.)";
+      });
+  }
 }
 
 function restart() {

@@ -7,6 +7,7 @@
   <meta name="description" content="초등학교 4~6학년을 위한 재미있는 20문항 성향 탐색 웹앱">
   <title>우리 반 나의 성향 찾기</title>
   <link rel="stylesheet" href="style.css">
+  <script src="firebase-config.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -37,7 +38,7 @@
           <label>번호<input id="studentNumber" type="number" min="1" max="50" step="1" inputmode="numeric" placeholder="예: 12" required></label>
           <label>이름<input id="studentName" type="text" maxlength="20" autocomplete="off" placeholder="예: 김하늘" required></label>
         </div>
-        <div class="privacy-note"><strong>🔒 개인정보 안내 (첫 번째 버전)</strong><p>학년·반·번호·이름은 이 기기에서 결과를 보여 주는 데만 사용합니다. 서버로 보내거나 파일·브라우저 저장소에 저장하지 않으며, 새로고침하거나 페이지를 닫으면 사라집니다. 공용 컴퓨터에서는 사용 후 페이지를 닫아 주세요.</p><label class="agreement"><input id="privacyCheck" type="checkbox" required><span>위 안내를 읽고 계속 진행하겠습니다.</span></label></div>
+        <div class="privacy-note"><strong>🔒 개인정보 안내 (Firebase 준비 버전)</strong><p>학년·반·번호·이름은 결과를 화면에 표시할 때만 사용하며 Firebase에 보내지 않습니다. Firebase를 연결하면 성향 유형과 유형별 점수만 저장됩니다. 저장할 때 Firebase 익명 인증 식별자 및 저장 시각도 기록됩니다. 실제 학생을 대상으로 사용하기 전 학교의 개인정보 처리 기준을 확인해 주세요.</p><label class="agreement"><input id="privacyCheck" type="checkbox" required><span>위 안내를 읽고 계속 진행하겠습니다.</span></label></div>
         <p id="infoError" class="error" role="alert" aria-live="polite"></p>
         <div class="action-row"><button type="button" class="ghost" id="infoBackBtn">← 처음으로</button><button type="submit" class="primary">문제 풀러 가기 →</button></div>
       </form>
@@ -58,7 +59,7 @@
       <div class="score-panel"><h3>내가 보여 준 네 가지 모습</h3><p>각 성향에 해당하는 5문항의 응답 합계예요. 높고 낮음에 좋고 나쁨은 없어요.</p><div id="scoreBars"></div></div>
       <div class="closing-note">💜 사람에게는 여러 성향이 함께 있어요. 결과는 나를 이해하는 작은 힌트일 뿐, 나와 친구를 정해진 유형으로 나누는 기준이 아니에요.</div>
       <div class="action-row result-actions"><button type="button" class="ghost" id="printBtn">🖨️ 결과 인쇄</button><button type="button" class="primary" id="restartBtn">↻ 다시 시작하기</button></div>
-      <p class="footnote" id="saveStatus">첫 번째 버전: 결과는 온라인 데이터베이스에 저장되지 않습니다.</p>
+      <p class="footnote" id="saveStatus">Firebase를 연결하기 전에는 결과가 온라인으로 저장되지 않습니다.</p>
     </section>
   </main>
 </body>
